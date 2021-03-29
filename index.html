@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src="fileSaver.js"></script>
+</head>
+
+<body>
+    <button id="$start" onclick="ini_save(event,1,4,3000,'بواسطته','5-7-2020',2)">Start</button>
+    <p id="xml"></p>
+    <script>
+        //support all browser
+        window.URL = window.URL || window.webkitURL;
+
+        function ini_save(event, id, custom_id, amount, note, data, u_id) {
+            let text = "\
+<?xml version='1.0' encoding='utf-8'?> \n\
+<invoices> \n\
+    <row> \n\
+        <id>" + id + "</id>\n\
+        <custom_id>" + custom_id + "</custom_id>\n\
+        <amount>" + amount + "</amount>\n\
+        <note>" + note + "</note>\n\
+        <date>" + data + "</date>\n\
+        <u_id>" + u_id + "</u_id>\n\
+    </row>\n\
+    <row> \n\
+        <id>" + id + "</id>\n\
+        <custom_id>" + custom_id + "</custom_id>\n\
+        <amount>" + amount + "</amount>\n\
+        <note>" + note + "</note>\n\
+        <date>" + data + "</date>\n\
+        <u_id>" + u_id + "</u_id>\n\
+    </row>\n\
+    <row> \n\
+        <id>" + id + "</id>\n\
+        <custom_id>" + custom_id + "</custom_id>\n\
+        <amount>" + amount + "</amount>\n\
+        <note>" + note + "</note>\n\
+        <date>" + data + "</date>\n\
+        <u_id>" + u_id + "</u_id>\n\
+    </row>\n\
+</invoices>\n";
+
+            // save(text, "file1.xml");
+            read(text);
+        }
+
+        //change string to xml object
+        function read(text) {
+            var parser = new DOMParser();
+            var xmlDoc = parser.parseFromString(text, "application/xml");
+            //   console.log(xmlDoc.getElementsByTagName("row")[0].lastChild[7].textContent);
+
+            newele = xmlDoc.createElement("row");
+
+            newid = xmlDoc.createElement("id");
+            textid = xmlDoc.createTextNode("4");
+            newid.appendChild(textid);
+
+            newcustomid = xmlDoc.createElement("customid");
+            textcustomid = xmlDoc.createTextNode("6");
+            newcustomid.appendChild(textcustomid);
+
+            newamount = xmlDoc.createElement("amount");
+            textamount = xmlDoc.createTextNode("95000");
+            newamount.appendChild(textamount);
+
+            newnote = xmlDoc.createElement("note");
+            textnote = xmlDoc.createTextNode("حسام اليعري ");
+            newnote.appendChild(textnote);
+
+            newdate = xmlDoc.createElement("date");
+            textdate = xmlDoc.createTextNode("20-10-2020");
+            newdate.appendChild(textdate);
+
+            newuid = xmlDoc.createElement("uid");
+            textuid = xmlDoc.createTextNode("1");
+            newuid.appendChild(textuid);
+
+            newele.appendChild(newid);
+            newele.appendChild(newcustomid);
+            newele.appendChild(newamount);
+            newele.appendChild(newnote);
+            newele.appendChild(newdate);
+            newele.appendChild(newuid);
+
+            xmlDoc.getElementsByTagName("invoices")[0].appendChild(newele);
+            console.log(xmlDoc);
+
+            // change xml object to string for save it in file
+            xmlText = xmlDoc.documentElement.outerHTML;
+            console.log(xmlText);
+
+            save(xmlText, "file1.xml");
+            // fileSaver(xmlText,"file1.xml");
+        }
+
+
+
+        //create new xml file and save xml object in it as string
+        function save(data, filename) {
+            let blob = new Blob([data], {
+                type: 'text/xml;charset=utf-8'
+            });
+            if (window.saveAs) {
+                window.saveAs(blob, filename);
+            } else if (navigator.msSaveBlob) {
+                navigator.msSaveBlob(blob, filename);
+            } else {
+                let url = window.URL.createObjectURL(blob);
+                let link = document.createElement("a");
+                link.setAttribute("href", url);
+                link.setAttribute("download", filename);
+                let event = document.createEvent('MouseEvents');
+                event.initMouseEvent('click', true, true, window, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
+                //  window.URL.revokeObjectURL(url);
+                //  document.removeChild(link);
+                link.dispatchEvent(event);
+            }
+        }
+
+        function fileSaver(data, filename) {
+            ////////////////////////file saver api
+            var blob = new Blob([data], {
+                type: "text/xml;charset=utf-8"
+            });
+            saveAs(blob, filename);
+            ////////////////////////////////
+        }
+        /*
+         /////update exsting file only with internet explorer
+              var fso = new ActiveXObject("Scripting.FileSystemObject");
+              var filename = "C:\\wamp\\www\\filestore\\file1.xml";
+              fso.CreateTextFile(filename);
+
+            //  write();
+              function write() {
+                  var file = fso.GetFile(filename);
+                  var streamWrite = file.OpenAsTextStream(2);
+                  streamWrite.WriteLine("heloooooooooooooooooo");
+                  streamWrite.Close();
+              }
+              */
+    </script>
+</body>
+
+</html>

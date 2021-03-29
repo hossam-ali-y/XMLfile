@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+
+    <script language="JavaScript">
+        /*
+                                                                                                                                                                                                                                                                                                                                                                // Create a connection to the file.
+                                                                                                                                                                                                                                                                                                                                                                var Connect = new XMLHttpRequest();
+                                                                                                                                                                                                                                                                                                                                                                // Define which file to open and
+                                                                                                                                                                                                                                                                                                                                                                // send the request.
+                                                                                                                                                                                                                                                                                                                                                                Connect.open("GET", "Customers.xml", false);
+                                                                                                                                                                                                                                                                                                                                                                Connect.setRequestHeader("Content-Type", "text/xml");
+                                                                                                                                                                                                                                                                                                                                                                Connect.send(null);
+                                                                                                                                                                                                                                                                                                                                                                // Place the response in an XML document.
+                                                                                                                                                                                                                                                                                                                                                                var TheDocument = Connect.responseXML;
+                                                                                                                                                                                                                                                                                                                                                                // Place the root node in an element.
+                                                                                                                                                                                                                                                                                                                                                                var Customers = TheDocument.childNodes[0];
+                                                                                                                                                                                                                                                                                                                                                                // Retrieve each customer in turn.
+                                                                                                                                                                                                                                                                                                                                                                for (var i = 0; i < Customers.children.length; i++) {
+                                                                                                                                                                                                                                                                                                                                                                    var Customer = Customers.children[i];
+                                                                                                                                                                                                                                                                                                                                                                    // Access each of the data values.
+                                                                                                                                                                                                                                                                                                                                                                    var Name = Customer.getElementsByTagName("Name");
+                                                                                                                                                                                                                                                                                                                                                                    var Age = Customer.getElementsByTagName("Age");
+                                                                                                                                                                                                                                                                                                                                                                    var Color = Customer.getElementsByTagName(
+                                                                                                                                                                                                                                                                                                                                                                        "FavoriteColor");
+                                                                                                                                                                                                                                                                                                                                                                    // Write the data to the page.
+                                                                                                                                                                                                                                                                                                                                                                    document.write("<tr><td>");
+                                                                                                                                                                                                                                                                                                                                                                    document.write(Name[0].textContent.toString());
+                                                                                                                                                                                                                                                                                                                                                                    document.write("</td><td>");
+                                                                                                                                                                                                                                                                                                                                                                    document.write(Age[0].textContent.toString());
+                                                                                                                                                                                                                                                                                                                                                                    document.write("</td><td>");
+                                                                                                                                                                                                                                                                                                                                                                    document.write(Color[0].textContent.toString());
+                                                                                                                                                                                                                                                                                                                                                                    document.write("</td></tr>");
+                                                                                                                                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                                                                                                                                                */
+        /*
+                var xmlDoc = document.implementation.createDocument("", "", null);
+
+                function documentLoaded(e) {
+                    alert(new XMLSerializer().serializeToString(e.target)); // Gives querydata.xml contents as string
+                }
+
+                xmlDoc.addEventListener("load", documentLoaded, false);
+                xmlDoc.load('querydata.xml');
+                */
+        /*
+                if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)) {
+                    // INTERNET EXPLORER
+                    xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+                    try {
+                        xmlDoc.async = "true";
+                        xmlDoc.load("file1.xml");
+                    } catch (ex) {
+                        alert("exception");
+                        alert(ex.message);
+                    }
+                } else if (/Firefox[\/\s](\d+\.\d+)/.test(navigator.userAgent)) {
+                    // MOZILLA FIREFOX
+                    // load xml file
+                    xmlDoc = loadXMLDoc("file1.xml");
+                } else if (/Chrome[\/\s](\d+\.\d+)/.test(navigator.userAgent)) {
+                    // GOOGLE CHROME
+                    // load xml file
+                    // ????????
+                    readxml();
+                } else if (/Opera[\/\s](\d+\.\d+)/.test(navigator.userAgent)) {
+                    // OPERA
+                    alert("Opera is not supported as of now");
+                } else if (browser.toLowerCase().indexOf('safari') > 0) {
+                    // APPLE SAFARI
+                    // load xml file
+                    xmlDoc = loadXMLDoc("file1.xml");
+                } else {
+                    // OTHER BROWSERS
+                    // load xml file
+                    xmlDoc = loadXMLDoc("file1.xml");
+                }
+
+                function readxml() {
+                    xmlHttp = new window.XMLHttpRequest();
+                    xmlHttp.open("GET", "file1.xml", false);
+                    xmlHttp.send(null);
+                    xmlDoc = xmlHttp.responseXML.documentElement;
+                }
+                */
+
+        /*loadtext();
+        function loadtext() {
+            let xmlContent = '';
+            fetch('file1.xml').then((Response) => {
+                Response.text().then((xml) => {
+                    xmlContent = xml;
+                    let parser = new DOMParser();
+                    let xmlDOM = parser.parseFromString(xmlContent, 'application/xml');
+                    console.log(xmlDOM);
+                });
+            });
+        }
+*/
+
+
+
+        console.log(getNewFileHandle());
+        async function getNewFileHandle() {
+            const opts = {
+                type: 'save-file',
+                accepts: [{
+                    description: 'Text file',
+                    extensions: ['txt'],
+                    mimeTypes: ['text/plain'],
+                }],
+            };
+            //const handle = await window.chooseFileSystemEntries(opts);
+            return opts;
+        }
+    </script>
+
+</head>
+
+<body>
+
+    <input type="file" id="input">
+    <a id="downloadLink" download>Download</a>
+
+    <script>
+        /////////////////////////////////////////////////
+        var inputElement = document.getElementById("input");
+        var reader = new FileReader();
+        var downloadLink = document.getElementById('downloadLink');
+
+        reader.onloadend = function() {
+            console.log(reader.result);
+        }
+        inputElement.addEventListener("change", handleFiles, false);
+
+        function handleFiles() {
+            var fileSelected = this.files[0]; /* now you can work with the file list */
+            reader.readAsBinaryString(fileSelected);
+            downloadLink.href = window.URL.createObjectURL(fileSelected);
+        }
+        ////////////////////////////////////////////////////////////
+
+        var file = "C:/wamp/www/filestore/file1.xml";
+        //readTextFile();
+
+        function readTextFile(file) {
+            var readFile;
+            if (window.XMLHttpRequest) {
+                // for new browsers
+                readFile = new XMLHttpRequest();
+            } else {
+                //for old browsers like IE5 or IE6
+                readFile = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            readFile.open("GET", "file1.xml", true);
+            readFile.onreadystatechange = function() {
+                if (readFile.readyState === 4) {
+                    if (readFile.status === 200 || readFile.status == 0) {
+                        //text will be displayed that read from the file
+                        console.log(readFile.responseText);
+                    }
+                }
+            }
+            readFile.send(null);
+        }
+        ///////////////////////////////////////////////////
+        /*
+        xmlDoc = loadXMLDoc("dbbackup.xml");
+        x = xmlDoc.getElementsByTagName("record");
+        alert(x);
+        for (i = 0; i < 3; i++) {
+            newel = xmlDoc.createElement("edition");
+            newtext = xmlDoc.createTextNode("first");
+            alert("x  : " + x[i]);
+            alert("newtext :" + newtext.nodevalue);
+            x[i].appendChild(newel);
+            alert("sd");
+        }
+
+        function loadXMLDoc(dname) {
+            if (window.XMLHttpRequest) {
+                xhttp = new XMLHttpRequest();
+            } else {
+                xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xhttp.open("GET", dname, false);
+            xhttp.send();
+            return xhttp.responseXML;
+        }
+        */
+        /////////////////////////////////////////////////////////////
+        //  test();
+
+        function test() {
+            var v = new XMLWriter();
+            v.writeStartDocument(true);
+            v.writeElementString('test', 'Hello World');
+            v.writeAttributeString('foo', 'bar');
+            v.writeEndDocument();
+            console.log(v.flush());
+        }
+
+        ///////////////////////////////////////////////////////////
+    </script>
+</body>
+
+</html>
